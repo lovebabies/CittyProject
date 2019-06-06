@@ -1,7 +1,7 @@
 package com.example.practiceproject2
 
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 
 class SimpleItemTouchHelperCallback(val mListener: ItemTouchHelperListener): ItemTouchHelper.Callback() {
     override fun isLongPressDragEnabled(): Boolean {

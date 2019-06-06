@@ -1,9 +1,9 @@
 package com.example.practiceproject2.ui.home
 
 import android.os.Handler
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.practiceproject2.EndlessScrolledRecyclerViewListener
 import com.example.practiceproject2.ItemTouchHelperListener
 import com.example.practiceproject2.R
 import com.example.practiceproject2.SimpleItemTouchHelperCallback
@@ -17,8 +17,6 @@ class HomeFragment: BaseFragment(){
 
     private lateinit var mAdapter: HomeAdapter
     private var mDataList: ArrayList<String?> = ArrayList()
-    private var isLoading = false
-    private var visivleThresold = 5
 
     override fun getViewId(): Int {
         return R.layout.fragment_home
@@ -30,6 +28,7 @@ class HomeFragment: BaseFragment(){
     }
 
     override fun initData() {
+        //Replace Call API
         for (i in 1..10) {
             mDataList.add(UUID.randomUUID().toString())
         }
@@ -51,7 +50,7 @@ class HomeFragment: BaseFragment(){
         itemTouchHelper.attachToRecyclerView(recyclerView)
         swipeRefresh.setOnRefreshListener {
             mAdapter.clearDataList()
-            mAdapter.addDataList(mDataList)
+            initData()
             swipeRefresh.isRefreshing = false
         }
     }
@@ -61,39 +60,27 @@ class HomeFragment: BaseFragment(){
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = mAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener(){
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
-                    val totalItemCount = layoutManager?.itemCount
-                    val lastVisibleItem = layoutManager?.findLastVisibleItemPosition()
-                    if (!isLoading && (totalItemCount!! < (lastVisibleItem!! + visivleThresold))) {
-                        onLoadMore()
+            addOnScrollListener(object : EndlessScrolledRecyclerViewListener(){
+                override fun onLoadMore() {
+                    if (mDataList.size < 50) {
+                        mDataList.add(null)
+                        mAdapter.notifyItemInserted(mDataList.size - 1)
+                        Handler().postDelayed({
+                            mDataList.removeAt(mDataList.size -1 )
+                            mAdapter.notifyItemRemoved(mDataList.size )
+
+                            //more data
+                            val index = mDataList.size
+                            val end = index + 10
+                            for (i in index until end ) {
+                                mAdapter.addData(UUID.randomUUID().toString())
+                            }
+                            updateLoading()
+                        },500)
                     }
                 }
             })
         }
-        mAdapter.addDataList(mDataList)
-    }
-
-    fun onLoadMore() {
-        if (mDataList.size < 50) {
-            mDataList.add(null)
-            mAdapter.notifyItemInserted(mDataList.size - 1)
-            Handler().postDelayed({
-                mDataList.removeAt(mDataList.size -1 )
-                mAdapter.notifyItemRemoved(mDataList.size)
-
-                //more data
-                val index = mDataList.size
-                val end = index + 10
-                for (i in index until end ) {
-                    mDataList.add(UUID.randomUUID().toString())
-                }
-
-                mAdapter.notifyDataSetChanged()
-                isLoading = false
-
-            },2000)
-        }
+        mAdapter.setDataList(mDataList)
     }
 }

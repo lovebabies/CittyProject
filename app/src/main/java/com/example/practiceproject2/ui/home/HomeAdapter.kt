@@ -1,10 +1,10 @@
 package com.example.practiceproject2.ui.home
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.example.practiceproject2.R
 import kotlinx.android.synthetic.main.item_home.view.*
 import kotlinx.android.synthetic.main.item_loading.view.*
@@ -53,9 +53,18 @@ class HomeAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    fun setDataList(dataList: ArrayList<String?>) {
+        mDataList = dataList
+        notifyDataSetChanged()
+    }
 
     fun addDataList(dataList: ArrayList<String?>) {
         mDataList.addAll(dataList)
+        notifyDataSetChanged()
+    }
+
+    fun addData(data: String?) {
+        mDataList.add(data)
         notifyDataSetChanged()
     }
 

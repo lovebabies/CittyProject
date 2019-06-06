@@ -1,12 +1,12 @@
 package com.example.practiceproject2.ui
 
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.example.practiceproject2.R
 import com.example.practiceproject2.base.BaseActivity
 import com.example.practiceproject2.ui.home.HomeFragment
 import com.example.practiceproject2.ui.notification.NotificationFragment
 import com.example.practiceproject2.ui.profile.ProfileFragment
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
