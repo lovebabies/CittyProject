@@ -15,7 +15,6 @@ abstract class BaseActivity: AppCompatActivity() {
     abstract fun getViewId(): Int
 
     protected fun injectInjector() {
-
     }
 
     abstract fun initView()
