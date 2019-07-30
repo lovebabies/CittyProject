@@ -20,6 +20,10 @@ class MainActivity : BaseActivity() {
         openHomeFragment()
     }
 
+    override fun initData() {
+
+    }
+
     private fun setupMainTab() {
         //Add customs view
         mainTabs.addTab(mainTabs.newTab().setCustomView(R.layout.tab_home))
@@ -92,9 +96,5 @@ class MainActivity : BaseActivity() {
 
     private fun replaceFragment(fragment: Fragment, tag: String?) {
         supportFragmentManager.beginTransaction().replace(R.id.mainContainer,fragment,tag).addToBackStack(null).commit()
-    }
-
-    override fun initData() {
-
     }
 }
